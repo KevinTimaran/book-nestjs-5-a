@@ -124,6 +124,9 @@ export class UserController {
         };
     }
 
+    // Con esta funcion es posible eliminar un usuario por su ID, si el usuario no existe,
+    //  se devuelve un mensaje indicando que el usuario no existe. Si el usuario existe,
+    //  se elimina de la lista de usuarios y se devuelve un mensaje indicando que el usuario fue eliminado correctamente.
     @Delete(':id')
     deleteUser(@Param('id') id : string) {
 
