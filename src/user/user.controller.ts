@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 
 interface User {
     id: string;
@@ -85,4 +85,101 @@ export class UserController {
         if (!data) return { result: "El correo del nombre ingresado no existe" }
         return { result: data?.email };
     }
+
+
+    /**
+     * 
+     * NO SE PUEDE CREAR USUARIO PORQUE NO HAY UN MODELO DE USUARIO, SOLO HAY UN MODELO DE PRODUCTO
+
+        //Punto E: Crear Producto
+    @Post()
+    createUser(@Body() user:  User){
+        console.log('.:: user: ', user);
+        this.users.push(user);
+        return {
+        msg: "Usuario creado correctamente",
+        data: user
+        };
+    }
+        */
+
+    //Punto E: Crear Usuario
+
+    @Post()
+    createUser(@Body() userPayLoad:  User){
+        console.log('.:: user: ', userPayLoad);
+
+
+        const data = this.users.find((user) => user.id === userPayLoad.id);
+        if (data) {
+            return {
+                msg: "Usuario ya existe",
+                data: data
+            };
+        }
+        this.users.push(userPayLoad);
+        return {
+        msg: "Usuario creado correctamente",
+        data: userPayLoad
+        };
+    }
+
+    @Delete(':id')
+    deleteUser(@Param('id') id : string) {
+
+        console.log('.:: User ID: ', id);
+        const position = this.users.findIndex((user) => user.id === id);
+        console.log('.:: User Position: ', position);
+        
+
+        if (position == -1) {
+            return {
+                msg: "Usuario no existe",
+            };
+        }
+
+        this.users.splice(position, 1);
+        
+        return {
+            msg: "Usuario eliminado correctamente",
+        };
+    }
+
+
+    @Put(':id')
+    updateUser(@Param('id') id: string, @Body() userChange: User) {
+
+
+        console.log('.:: User ID Update:', id);
+        console.log('.:: userupdated:', userChange);
+
+        const position = this.users.findIndex((user) => user.id === id);
+        if (position == -1) {
+            return {
+                msg: "Usuario no existe",
+            };
+        }
+        const existingUser = this.users[position];
+        console.log('.:: existingUser:', existingUser);
+
+        const updatedUser = { ...existingUser, ...userChange };
+        this.users[position] = updatedUser;
+        
+        
+
+
+        return {
+            msg: "Usuario actualizado correctamente",
+            data: {}
+        }
+
+
+    }
+        
+
+
+
+
+
+
 }

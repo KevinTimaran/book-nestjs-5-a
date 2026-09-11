@@ -1,4 +1,4 @@
-import { Controller, Param, Get } from '@nestjs/common';
+import { Controller, Param, Get, Post, Body } from '@nestjs/common';
 
 export interface Producto {
     id: string;
@@ -126,5 +126,28 @@ export class ProductosController {
         return data;
     }
 
+    //Punto E: Crear Producto
+    @Post()
+    createProducto(@Body() crearProducto: Producto) {
+        console.log('.:: producto: ', crearProducto);
+
+        const data = this.productos.find((productos) => productos.id === crearProducto.id);
+        if (data){
+            return {
+                msg: "Producto ya existe",
+                data: data
+            };
+
+            this.productos.push(crearProducto);
+            return {
+                msg: "Producto creado correctamente",
+                data: crearProducto
+            };
+        }
+    }
+
+
+
+    
 }
 
