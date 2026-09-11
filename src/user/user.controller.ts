@@ -148,6 +148,11 @@ export class UserController {
         };
     }
 
+    //Esta funcion permite actualizar un usuario existente en la lista de usuarios. 
+    // Se busca el usuario por su ID y se actualizan los campos proporcionados en el
+    //  objeto userChange. Si el usuario no existe, se devuelve un mensaje indicando 
+    // que el usuario no existe. Si el usuario existe, se actualiza y se devuelve un 
+    // mensaje indicando que el usuario fue actualizado correctamente.
 
     @Put(':id')
     updateUser(@Param('id') id: string, @Body() userChange: User) {

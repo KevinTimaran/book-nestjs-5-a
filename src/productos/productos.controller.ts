@@ -1,4 +1,4 @@
-import { Controller, Param, Get, Post, Body, Delete } from '@nestjs/common';
+import { Controller, Param, Get, Post, Body, Delete, Put } from '@nestjs/common';
 
 export interface Producto {
     id: string;
@@ -163,6 +163,29 @@ export class ProductosController {
         this.productos.splice(position, 1);
         return {
             msg: "Producto eliminado correctamente",
+        };
+    }
+
+    @Put(':id')
+    updateProducto(@Param('id') id: string, @Body() productoChange: Producto) {
+
+        console.log('.:: Producto ID: ', id);
+        console.log('.:: Producto Change: ', productoChange);
+
+        const position = this.productos.findIndex((productos) => productos.id === id);
+        console.log('.:: Producto Position: ', position);
+
+        if (position == -1) {
+            return {
+                msg: "Producto no existe",
+            };
+        }
+
+        this.productos[position] = { ...this.productos[position], ...productoChange };
+
+        return {
+            msg: "Producto actualizado correctamente",
+            data: this.productos[position]
         };
     }
 
